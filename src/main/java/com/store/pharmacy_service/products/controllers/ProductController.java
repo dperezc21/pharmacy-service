@@ -1,0 +1,26 @@
+package com.store.pharmacy_service.products.controllers;
+
+import com.store.pharmacy_service.products.application.ProductService;
+import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
+import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired private ProductService productService;
+
+    @PostMapping
+    public void addProduct(@RequestBody ProductRequest productRequest) {
+        this.productService.saveProduct(productRequest);
+    }
+
+    @GetMapping
+    public List<ProductResponse> getProductList() {
+        return this.productService.getAllProducts();
+    }
+}
