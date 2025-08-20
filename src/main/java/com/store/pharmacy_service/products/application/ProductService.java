@@ -17,7 +17,7 @@ public class ProductService {
 
     public void saveProduct(ProductRequest productRequest) {
         Product productToSave = Product.builder()
-                .sku(productRequest.getSku())
+                .sku(productRequest.getCode())
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice()).build();

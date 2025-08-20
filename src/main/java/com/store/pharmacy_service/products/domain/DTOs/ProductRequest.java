@@ -10,9 +10,12 @@ import lombok.*;
 @Builder
 public class ProductRequest {
 
-    private String sku;
+    private String code;
     private String name;
     private String description;
     private Double price;
-    private Boolean status;
+    private CategoryRequest category;
+    private Double productWeight;
+    private Double iva;
+    private LaboratoryRequest laboratory;
 }

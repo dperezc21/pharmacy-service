@@ -14,4 +14,6 @@ public class ProductResponse {
     private String name;
     private String description;
     private Double price;
+    private CategoryResponse category;
+    private LaboratoryResponse laboratory;
 }
