@@ -15,8 +15,8 @@ public class ProductController {
     @Autowired private ProductService productService;
 
     @PostMapping
-    public void addProduct(@RequestBody ProductRequest productRequest) {
-        this.productService.saveProduct(productRequest);
+    public ProductResponse addProduct(@RequestBody ProductRequest productRequest) {
+        return this.productService.saveProduct(productRequest);
     }
 
     @GetMapping
