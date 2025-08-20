@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LaboratoryResponse extends BaseDto {
+public class LaboratoryResponse {
     private Long laboratoryId;
+    private String name;
+    private String description;
 }

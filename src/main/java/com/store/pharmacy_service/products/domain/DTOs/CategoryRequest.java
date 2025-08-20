@@ -6,7 +6,8 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CategoryRequest extends BaseDto {
-
-
+public class CategoryRequest {
+    private Long categoryId;
+    protected String name;
+    protected String description;
 }

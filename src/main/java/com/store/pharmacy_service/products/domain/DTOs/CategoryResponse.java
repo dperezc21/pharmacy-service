@@ -6,6 +6,9 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CategoryResponse extends BaseDto {
+@NoArgsConstructor
+public class CategoryResponse {
     private Long categoryId;
+    private String name;
+    private String description;
 }
