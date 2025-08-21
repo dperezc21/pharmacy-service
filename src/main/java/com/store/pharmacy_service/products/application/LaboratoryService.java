@@ -4,9 +4,9 @@ import com.store.pharmacy_service.products.domain.DTOs.LaboratoryRequest;
 import com.store.pharmacy_service.products.domain.DTOs.LaboratoryResponse;
 import com.store.pharmacy_service.products.domain.entities.Laboratory;
 import com.store.pharmacy_service.products.domain.repositories.LaboratoryRepository;
+import com.store.pharmacy_service.products.utils.mappers.MapLaboratory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +18,13 @@ public class LaboratoryService {
 
     public List<LaboratoryResponse> findAll() {
         List<Laboratory> laboratories = Streamable.of(this.laboratoryRepository.findAll()).toList();
-        return laboratories.stream().map(this::mapToLaboratoryResponse).toList();
+        return laboratories.stream().map(MapLaboratory::mapToLaboratoryResponse).toList();
     }
 
     public LaboratoryResponse findById(Long id) {
         Laboratory laboratory = this.laboratoryRepository.findById(id).orElse(null);
         if(laboratory == null) return null;
-        return this.mapToLaboratoryResponse(laboratory);
+        return MapLaboratory.mapToLaboratoryResponse(laboratory);
     }
 
     public LaboratoryResponse saveLaboratory(LaboratoryRequest lab) {
@@ -33,12 +33,6 @@ public class LaboratoryService {
                 .description(lab.getDescription())
                 .build();
         Laboratory laboratorySaved = this.laboratoryRepository.save(laboratory);
-        return Objects.nonNull(laboratorySaved.getId()) ? this.mapToLaboratoryResponse(laboratorySaved) : null;
-    }
-    private LaboratoryResponse mapToLaboratoryResponse(Laboratory laboratory) {
-        return LaboratoryResponse.builder()
-                .laboratoryId(laboratory.getId())
-                .name(laboratory.getName())
-                .description(laboratory.getDescription()).build();
+        return Objects.nonNull(laboratorySaved.getId()) ? MapLaboratory.mapToLaboratoryResponse(laboratorySaved) : null;
     }
 }
