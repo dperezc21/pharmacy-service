@@ -4,6 +4,7 @@ import com.store.pharmacy_service.products.application.ProductService;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,5 +23,10 @@ public class ProductController {
     @GetMapping
     public List<ProductResponse> getProductList() {
         return this.productService.getAllProducts();
+    }
+
+    @PutMapping("/{productId}")
+    public ProductResponse update(@PathVariable Long productId, @RequestBody ProductRequest productRequest) {
+        return this.productService.editProduct(productId, productRequest);
     }
 }

@@ -16,4 +16,6 @@ public class ProductResponse {
     private Double price;
     private CategoryResponse category;
     private LaboratoryResponse laboratory;
+    private Double iva;
+    private Double productWeight;
 }

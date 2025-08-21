@@ -15,7 +15,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String sku; // Stock Keeping Unit
+
+    @Column(unique = true)
     private String name;
     private String description;
 
@@ -24,9 +27,6 @@ public class Product {
 
     @Column(name = "sale_price")
     private Double salePrice;
-
-    @Column(name = "category")
-    private String categoryName;
 
     @Column(name = "weight")
     private Double productWeight;
