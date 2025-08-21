@@ -92,4 +92,11 @@ public class ProductService {
                 .name(category.getName())
                 .id(category.getCategoryId()).build();
     }
+
+    public Boolean deleteProduct(Long productId) {
+        Product productToDelete = this.productRepository.findById(productId).orElse(null);
+        if(productToDelete == null) return false;
+        this.productRepository.delete(productToDelete);
+        return true;
+    }
 }
