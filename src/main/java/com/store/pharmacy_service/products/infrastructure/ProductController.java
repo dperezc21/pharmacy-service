@@ -1,10 +1,9 @@
-package com.store.pharmacy_service.products.controllers;
+package com.store.pharmacy_service.products.infrastructure;
 
 import com.store.pharmacy_service.products.application.ProductService;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

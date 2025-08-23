@@ -1,4 +1,4 @@
-package com.store.pharmacy_service.products.controllers;
+package com.store.pharmacy_service.products.infrastructure;
 
 import com.store.pharmacy_service.products.application.CategoryService;
 import com.store.pharmacy_service.products.domain.DTOs.CategoryRequest;
