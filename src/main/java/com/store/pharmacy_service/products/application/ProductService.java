@@ -60,4 +60,8 @@ public class ProductService {
         this.productRepository.delete(productToDelete);
         return true;
     }
+
+    public Product findProductById(Long productId) {
+        return this.productRepository.findById(productId).orElse(null);
+    }
 }
