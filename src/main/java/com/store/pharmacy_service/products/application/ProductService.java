@@ -1,5 +1,7 @@
 package com.store.pharmacy_service.products.application;
 
+import com.store.pharmacy_service.inventory.domain.entities.Inventory;
+import com.store.pharmacy_service.inventory.domain.repositories.InventoryRepository;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
 import com.store.pharmacy_service.products.domain.entities.Product;
@@ -12,11 +14,13 @@ import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductService {
 
     @Autowired private ProductRepository productRepository;
+    @Autowired private InventoryRepository inventoryRepository;
 
     public ProductResponse saveProduct(ProductRequest productRequest) {
         Product productToSave = Product.builder()
@@ -30,6 +34,7 @@ public class ProductService {
                 .productWeight(productRequest.getProductWeight())
                 .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
+        if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
         return MapProduct.mapToProductResponse(result);
     }
 
@@ -65,5 +70,12 @@ public class ProductService {
 
     public Product findProductById(Long productId) {
         return this.productRepository.findById(productId).orElse(null);
+    }
+
+    public void createInventoryOfProduct(Product productSaved) {
+        Inventory inventory = new Inventory();
+        inventory.setQuantity(0L);
+        inventory.setProduct(productSaved);
+        this.inventoryRepository.save(inventory);
     }
 }
