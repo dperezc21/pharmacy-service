@@ -14,6 +14,7 @@ public class MapProduct {
                 .productWeight(product.getProductWeight())
                 .iva(product.getIva())
                 .laboratory(MapLaboratory.mapToLaboratoryResponse(product.getLaboratory()))
+                .salePrice(product.getSalePrice())
                 .build();
     }
 }

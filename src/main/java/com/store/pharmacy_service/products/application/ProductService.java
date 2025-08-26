@@ -27,7 +27,8 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .iva(productRequest.getIva())
-                .productWeight(productRequest.getProductWeight()).build();
+                .productWeight(productRequest.getProductWeight())
+                .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);
     }
@@ -44,7 +45,8 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .iva(productRequest.getIva())
-                .productWeight(productRequest.getProductWeight()).build();
+                .productWeight(productRequest.getProductWeight())
+                .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);
     }

@@ -18,4 +18,5 @@ public class ProductRequest {
     private Double productWeight;
     private Double iva;
     private LaboratoryRequest laboratory;
+    private Double salePrice;
 }
