@@ -53,7 +53,7 @@ public class ProductService {
 
     public List<ProductResponse> getAllProducts() {
         return Streamable.of(this.productRepository.findAll())
-                .stream().map(MapProduct::mapToProductResponse).toList();
+                .stream().map(MapProduct::mapToProductResponse).parallel().toList();
     }
 
     public Boolean deleteProduct(Long productId) {

@@ -42,7 +42,7 @@ public class OrderService {
         List<OrderItem> orderItems = orderRequest.getOrderItems().stream().map(orderItemRequest -> {
             Product product = this.productService.findProductById(orderItemRequest.getProductId());
             return this.mapToOrderItem(orderItemRequest, order, product);
-        }).toList();
+        }).parallel().toList();
         order.setOrderItems(orderItems);
         order.setObservations(orderRequest.getObservations());
         order.setDate(orderRequest.getDate());

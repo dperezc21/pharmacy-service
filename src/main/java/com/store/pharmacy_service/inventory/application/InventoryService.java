@@ -34,7 +34,7 @@ public class InventoryService {
 
     public List<InventoryResponse> getInventories() {
         List<Inventory> inventories = Streamable.of(this.inventoryRepository.findAll()).toList();
-        return inventories.stream().map(MapInventory::mapInventoryResponse).toList();
+        return inventories.stream().map(MapInventory::mapInventoryResponse).parallel().toList();
     }
 
     public void saveProductsInInventory(List<InventoryRequest> inventoryRequest) {
@@ -61,7 +61,7 @@ public class InventoryService {
             inventory.setDate(inventoryRequest1.getDate());
             inventory.setQuantity(quantity);
             return inventory;
-        }).toList();
+        }).parallel().toList();
     }
 
     public List<Inventory> mapToSaleInventoryList(List<InventoryRequest> inventoryRequests) {
@@ -76,6 +76,6 @@ public class InventoryService {
             inventory.setDate(inventoryRequest1.getDate());
             inventory.setQuantity(quantity);
             return inventory;
-        }).toList();
+        }).parallel().toList();
     }
 }

@@ -19,7 +19,7 @@ public class CategoryService {
 
     public List<CategoryResponse> getAllCategories() {
         List<Category> categories = Streamable.of(categoryRepository.findAll()).toList();
-        return categories.stream().map(MapCategory::mapToCategoryResponse).toList();
+        return categories.stream().map(MapCategory::mapToCategoryResponse).parallel().toList();
     }
 
     public CategoryResponse findCategoryById(Long categoryId) {

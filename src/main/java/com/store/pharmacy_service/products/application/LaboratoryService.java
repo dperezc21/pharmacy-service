@@ -18,7 +18,7 @@ public class LaboratoryService {
 
     public List<LaboratoryResponse> findAll() {
         List<Laboratory> laboratories = Streamable.of(this.laboratoryRepository.findAll()).toList();
-        return laboratories.stream().map(MapLaboratory::mapToLaboratoryResponse).toList();
+        return laboratories.stream().map(MapLaboratory::mapToLaboratoryResponse).parallel().toList();
     }
 
     public LaboratoryResponse findById(Long id) {
