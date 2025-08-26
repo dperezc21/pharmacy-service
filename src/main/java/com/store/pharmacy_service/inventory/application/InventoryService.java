@@ -2,7 +2,9 @@ package com.store.pharmacy_service.inventory.application;
 
 import com.store.pharmacy_service.inventory.domain.entities.Inventory;
 import com.store.pharmacy_service.inventory.domain.models.InventoryRequest;
+import com.store.pharmacy_service.inventory.domain.models.InventoryResponse;
 import com.store.pharmacy_service.inventory.domain.repositories.InventoryRepository;
+import com.store.pharmacy_service.inventory.utils.MapInventory;
 import com.store.pharmacy_service.products.application.ProductService;
 import com.store.pharmacy_service.products.domain.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +32,9 @@ public class InventoryService {
         return Objects.nonNull(productInStock.getId()) ? productInStock.getQuantity() - quantity : 0L;
     }
 
-    public List<Inventory> inventories() {
-        return Streamable.of(this.inventoryRepository.findAll()).toList();
+    public List<InventoryResponse> getInventories() {
+        List<Inventory> inventories = Streamable.of(this.inventoryRepository.findAll()).toList();
+        return inventories.stream().map(MapInventory::mapInventoryResponse).toList();
     }
 
     public void saveProductsInInventory(List<InventoryRequest> inventoryRequest) {

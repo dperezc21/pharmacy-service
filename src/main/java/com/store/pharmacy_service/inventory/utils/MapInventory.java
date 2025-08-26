@@ -1,6 +1,8 @@
 package com.store.pharmacy_service.inventory.utils;
 
+import com.store.pharmacy_service.inventory.domain.entities.Inventory;
 import com.store.pharmacy_service.inventory.domain.models.InventoryRequest;
+import com.store.pharmacy_service.inventory.domain.models.InventoryResponse;
 import com.store.pharmacy_service.orders.domain.entities.OrderItem;
 
 import java.util.Date;
@@ -16,5 +18,16 @@ public class MapInventory {
             inventory.setProductId(orderItem1.getProduct().getId());
             return inventory;
         }).toList();
+    }
+
+    public static InventoryResponse mapInventoryResponse(Inventory inventory) {
+
+        InventoryResponse inventoryResponse = new InventoryResponse();
+        inventoryResponse.setInventoryId(inventory.getId());
+        inventoryResponse.setDate(inventory.getDate());
+        inventoryResponse.setQuantity(inventory.getQuantity());
+        inventoryResponse.setProductId(inventory.getProduct().getId());
+        return inventoryResponse;
+
     }
 }

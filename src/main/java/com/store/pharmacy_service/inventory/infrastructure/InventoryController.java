@@ -1,7 +1,7 @@
 package com.store.pharmacy_service.inventory.infrastructure;
 
 import com.store.pharmacy_service.inventory.application.InventoryService;
-import com.store.pharmacy_service.inventory.domain.entities.Inventory;
+import com.store.pharmacy_service.inventory.domain.models.InventoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +21,8 @@ public class InventoryController {
     }
 
     @GetMapping
-    public List<Inventory> getAllInventories() {
-        return this.inventoryService.inventories();
+    public List<InventoryResponse> getAllInventories() {
+        return this.inventoryService.getInventories();
     }
 
     @GetMapping("/{productId}/{quantity}")
