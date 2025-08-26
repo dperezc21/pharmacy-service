@@ -24,26 +24,16 @@ public class OrderService {
     @Autowired private ProductService productService;
     @Autowired private InventoryService inventoryService;
 
-    public void placeOneOrder(OrderItemRequest orderItemRequest) {
-        Order order = new Order();
-        order.setOrderNumber(UUID.randomUUID().toString());
-        Product product = this.productService.findProductById(orderItemRequest.getProductId());
-        List<OrderItem> orderItems = order.getOrderItems();
-        orderItems.add(this.mapToOrderItem(orderItemRequest, order, product));
-        order.setOrderItems(orderItems);
-        this.orderRepository.save(order);
-    }
-
     public void placeOrder(OrderRequest orderRequest) {
         Order orderToSave = buildOrderToSave(orderRequest, OrderType.BUYS);
         Order save = this.orderRepository.save(orderToSave);
-        this.inventoryService.saveProductsInInventory(MapInventory.mapToBuysInventoryRequest(save.getOrderItems()));
+        this.inventoryService.saveProductsInInventory(MapInventory.mapInventoryRequest(save.getOrderItems()));
     }
 
     public void saleOrder(OrderRequest orderRequest) {
         Order order = buildOrderToSave(orderRequest, OrderType.SALE);
         Order save = this.orderRepository.save(order);
-        this.inventoryService.saveProductsInInventory(MapInventory.mapToSaleInventoryRequest(save.getOrderItems()));
+        this.inventoryService.saveProductsInInventoryFromSale(MapInventory.mapInventoryRequest(save.getOrderItems()));
     }
 
     private Order buildOrderToSave(OrderRequest orderRequest, OrderType orderType) {
