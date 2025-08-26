@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,19 +35,43 @@ public class InventoryService {
     }
 
     public void saveProductsInInventory(List<InventoryRequest> inventoryRequest) {
-        inventoryRepository.saveAll(this.mapToInventoryList(inventoryRequest));
+        inventoryRepository.saveAll(this.mapToBuysInventoryRequest(inventoryRequest));
+    }
+
+    public void saveProductsInInventoryFromSale(List<InventoryRequest> inventoryRequest) {
+        inventoryRepository.saveAll(this.mapToSaleInventoryList(inventoryRequest));
     }
 
     public Inventory getInventoryByProductId(Long product) {
         return inventoryRepository.findByProductId(product);
     }
 
-    private List<Inventory> mapToInventoryList(List<InventoryRequest> inventoryRequest) {
-        return inventoryRequest.stream().map(inventoryRequest1 -> {
+    public List<Inventory> mapToBuysInventoryRequest(List<InventoryRequest> inventoryRequests) {
+        return inventoryRequests.stream().map(inventoryRequest1 -> {
             Inventory inventory = getInventoryByProductId(inventoryRequest1.getProductId());
-            inventory.setDate(new Date());
-            inventory.setQuantity(inventoryRequest1.getQuantity());
-            inventory.setProduct(inventory.getProduct());
+            if(inventory == null) {
+                inventory = new Inventory();
+                Product product = this.productService.findProductById(inventoryRequest1.getProductId());
+                inventory.setProduct(product);
+            }
+            Long quantity = Objects.nonNull(inventory.getQuantity()) ? inventory.getQuantity() + inventoryRequest1.getQuantity() : inventoryRequest1.getQuantity();
+            inventory.setDate(inventoryRequest1.getDate());
+            inventory.setQuantity(quantity);
+            return inventory;
+        }).toList();
+    }
+
+    public List<Inventory> mapToSaleInventoryList(List<InventoryRequest> inventoryRequests) {
+        return inventoryRequests.stream().map(inventoryRequest1 -> {
+            Inventory inventory = getInventoryByProductId(inventoryRequest1.getProductId());
+            if(inventory == null) {
+                inventory = new Inventory();
+                Product product = this.productService.findProductById(inventoryRequest1.getProductId());
+                inventory.setProduct(product);
+            }
+            Long quantity = Objects.nonNull(inventory.getQuantity()) ? inventory.getQuantity() - inventoryRequest1.getQuantity() : inventoryRequest1.getQuantity();
+            inventory.setDate(inventoryRequest1.getDate());
+            inventory.setQuantity(quantity);
             return inventory;
         }).toList();
     }
