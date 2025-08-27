@@ -57,6 +57,7 @@ public class OrderService {
                 .price(orderItemRequest.getUnitPrice())
                 .quantity(orderItemRequest.getQuantity())
                 .order(order)
+                .subTotal(orderItemRequest.getSubTotal())
                 .build();
     }
 }

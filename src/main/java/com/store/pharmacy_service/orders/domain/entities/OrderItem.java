@@ -24,6 +24,9 @@ public class OrderItem {
 
     private Long quantity;
 
+    @Column(name = "sub_total")
+    private Double subTotal;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

@@ -12,4 +12,5 @@ public class OrderItemRequest {
     private Long productId;
     private Double unitPrice;
     private Long quantity;
+    private Double subTotal;
 }
