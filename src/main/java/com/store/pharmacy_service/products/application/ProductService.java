@@ -27,11 +27,9 @@ public class ProductService {
                 .sku(productRequest.getCode())
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
-                .iva(productRequest.getIva())
-                .productWeight(productRequest.getProductWeight())
+                .presentation(productRequest.getPresentation())
                 .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
@@ -46,11 +44,10 @@ public class ProductService {
                 .sku(findProductToEdit.getSku())
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
-                .price(productRequest.getPrice())
+                .packageSalePrice(productRequest.getPackageSalePrice())
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
-                .iva(productRequest.getIva())
-                .productWeight(productRequest.getProductWeight())
+                .presentation(productRequest.getPresentation())
                 .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);

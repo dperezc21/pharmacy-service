@@ -22,16 +22,13 @@ public class Product {
     private String name;
     private String description;
 
-    @Column(name = "buys_price")
-    private Double price;
-
     @Column(name = "sale_price")
     private Double salePrice;
 
-    @Column(name = "weight")
-    private Double productWeight;
+    @Column(name = "package_sale_price")
+    private Double packageSalePrice;
 
-    private Double iva;
+    private String presentation;
 
     @ManyToOne
     @JoinColumn(name = "laboratory_id")
@@ -48,7 +45,6 @@ public class Product {
                 ", sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", price=" + price +
                 '}';
     }
 }

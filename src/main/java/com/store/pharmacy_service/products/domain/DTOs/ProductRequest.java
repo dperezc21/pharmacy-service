@@ -13,10 +13,9 @@ public class ProductRequest {
     private String code;
     private String name;
     private String description;
-    private Double price;
+    private Double packageSalePrice;
     private CategoryRequest category;
-    private Double productWeight;
-    private Double iva;
     private LaboratoryRequest laboratory;
     private Double salePrice;
+    private String presentation;
 }

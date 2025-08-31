@@ -13,10 +13,9 @@ public class ProductResponse {
     private String code;
     private String name;
     private String description;
-    private Double price;
+    private Double packageSalePrice;
     private CategoryResponse category;
     private LaboratoryResponse laboratory;
-    private Double iva;
-    private Double productWeight;
     private Double salePrice;
+    private String presentation;
 }
