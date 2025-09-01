@@ -30,6 +30,7 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
+                .packageUnit(productRequest.getPackageUnit())
                 .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
@@ -48,6 +49,7 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
+                .packageUnit(productRequest.getPackageUnit())
                 .salePrice(productRequest.getSalePrice()).build();
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);

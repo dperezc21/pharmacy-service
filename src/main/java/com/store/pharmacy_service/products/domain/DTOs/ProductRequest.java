@@ -18,4 +18,5 @@ public class ProductRequest {
     private LaboratoryRequest laboratory;
     private Double salePrice;
     private String presentation;
+    private Integer packageUnit;
 }

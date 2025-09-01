@@ -28,6 +28,9 @@ public class Product {
     @Column(name = "package_sale_price")
     private Double packageSalePrice;
 
+    @Column(name = "package_unit")
+    private Integer packageUnit;
+
     private String presentation;
 
     @ManyToOne

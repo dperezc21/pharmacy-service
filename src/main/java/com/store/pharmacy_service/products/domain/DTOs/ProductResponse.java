@@ -18,4 +18,5 @@ public class ProductResponse {
     private LaboratoryResponse laboratory;
     private Double salePrice;
     private String presentation;
+    private Integer packageUnit;
 }

@@ -14,6 +14,7 @@ public class MapProduct {
                 .presentation(product.getPresentation())
                 .laboratory(MapLaboratory.mapToLaboratoryResponse(product.getLaboratory()))
                 .salePrice(product.getSalePrice())
+                .packageUnit(product.getPackageUnit())
                 .build();
     }
 }
