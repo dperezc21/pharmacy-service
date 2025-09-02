@@ -48,6 +48,12 @@ public class Product {
                 ", sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", salePrice=" + salePrice +
+                ", packageSalePrice=" + packageSalePrice +
+                ", packageUnit=" + packageUnit +
+                ", presentation='" + presentation + '\'' +
+                ", laboratory=" + laboratory +
+                ", category=" + category +
                 '}';
     }
 }
