@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: pharmacy-service
-    plan: free
-    env: docker
-    dockerfilePath: ./Dockerfile
-    autoDeploy: true
-
