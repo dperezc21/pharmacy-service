@@ -53,4 +53,14 @@ public class AuthUserController {
         }
         return ResponseEntity.ok(userResponse);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long userId) {
+        try {
+            this.userService.deleteUserById(userId);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(false);
+        }
+        return ResponseEntity.status(200).body(true);
+    }
 }

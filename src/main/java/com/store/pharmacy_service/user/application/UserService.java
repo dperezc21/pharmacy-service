@@ -53,6 +53,12 @@ public class UserService {
         return users.stream().map(this::mapToUserResponse).toList();
     }
 
+    public void deleteUserById(Long userId) throws UserNotFoundException {
+        UserEntity findUserToDelete = this.userRepository.findById(userId).orElse(null);
+        if(Objects.isNull(findUserToDelete)) throw new UserNotFoundException("User no found");
+        this.userRepository.delete(findUserToDelete);
+    }
+
     private UserResponse mapToUserResponse(UserEntity userEntity) {
         return UserResponse.builder()
                 .id(userEntity.getId())
