@@ -43,7 +43,8 @@ public class UserService {
         findUserById.setUserName(userRequest.getUserName());
         findUserById.setName(userRequest.getFullName());
         findUserById.setRole(userRequest.getRole().name());
-        if(!Objects.equals(userRequest.getPassword(), "")) findUserById.setPassword(BCryptUserPassword.encrypt(userRequest.getPassword()));
+        if(Objects.nonNull(userRequest.getPassword()))
+            findUserById.setPassword(BCryptUserPassword.encrypt(userRequest.getPassword()));
         this.userRepository.save(findUserById);
         return this.mapToUserResponse(findUserById);
     }
