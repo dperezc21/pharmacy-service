@@ -7,8 +7,10 @@ import com.store.pharmacy_service.user.domain.models.UserRequest;
 import com.store.pharmacy_service.user.domain.models.UserResponse;
 import com.store.pharmacy_service.user.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -44,6 +46,11 @@ public class UserService {
         if(!Objects.equals(userRequest.getPassword(), "")) findUserById.setPassword(BCryptUserPassword.encrypt(userRequest.getPassword()));
         this.userRepository.save(findUserById);
         return this.mapToUserResponse(findUserById);
+    }
+
+    public List<UserResponse> getAllUsers() {
+        List<UserEntity> users = Streamable.of(this.userRepository.findAll()).toList();
+        return users.stream().map(this::mapToUserResponse).toList();
     }
 
     private UserResponse mapToUserResponse(UserEntity userEntity) {

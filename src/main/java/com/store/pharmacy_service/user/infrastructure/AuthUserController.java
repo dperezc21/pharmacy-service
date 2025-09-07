@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthUserController {
@@ -37,6 +39,17 @@ public class AuthUserController {
             userResponse = this.userService.editUser(userId, userRequest);
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(userResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> allUsers() {
+        List<UserResponse> userResponse;
+        try {
+            userResponse = this.userService.getAllUsers();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(null);
         }
         return ResponseEntity.ok(userResponse);
     }
