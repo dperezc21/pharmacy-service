@@ -3,8 +3,6 @@ package com.store.pharmacy_service.user.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "user")
 @Getter

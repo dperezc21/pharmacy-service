@@ -21,7 +21,7 @@ public class AuthUserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserResponse> loginUser(@RequestBody UserRequest userRequest) {
-        UserResponse userResponse = null;
+        UserResponse userResponse;
         try {
            userResponse = this.userService.login(userRequest.getUserName(), userRequest.getPassword());
         } catch (UserNotFoundException e) {
@@ -32,7 +32,7 @@ public class AuthUserController {
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest, @PathVariable Long userId) {
-        UserResponse userResponse = null;
+        UserResponse userResponse;
         try {
             userResponse = this.userService.editUser(userId, userRequest);
         } catch (UserNotFoundException e) {
