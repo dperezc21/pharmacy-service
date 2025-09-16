@@ -2,6 +2,8 @@ package com.store.pharmacy_service.products.domain.DTOs;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Getter
 @Setter
@@ -13,10 +15,8 @@ public class ProductRequest {
     private String code;
     private String name;
     private String description;
-    private Double packageSalePrice;
     private CategoryRequest category;
     private LaboratoryRequest laboratory;
-    private Double salePrice;
     private String presentation;
-    private Integer packageUnit;
+    private List<PriceTypesRequest> priceTypes;
 }

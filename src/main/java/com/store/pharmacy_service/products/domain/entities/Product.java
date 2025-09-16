@@ -22,15 +22,6 @@ public class Product {
     private String name;
     private String description;
 
-    @Column(name = "sale_price")
-    private Double salePrice;
-
-    @Column(name = "package_sale_price")
-    private Double packageSalePrice;
-
-    @Column(name = "package_unit")
-    private Integer packageUnit;
-
     private String presentation;
 
     @ManyToOne
@@ -41,6 +32,18 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "unit_price")
+    private Double unitPrice;
+
+    @Column(name = "package_price")
+    private Double packagePrice;
+
+    @Column(name = "box_price")
+    private Double boxPrice;
+
+    @Column(name = "blister_price")
+    private Double blisterPrice;
+
     @Override
     public String toString() {
         return "Product{" +
@@ -48,9 +51,6 @@ public class Product {
                 ", sku='" + sku + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", salePrice=" + salePrice +
-                ", packageSalePrice=" + packageSalePrice +
-                ", packageUnit=" + packageUnit +
                 ", presentation='" + presentation + '\'' +
                 ", laboratory=" + laboratory +
                 ", category=" + category +

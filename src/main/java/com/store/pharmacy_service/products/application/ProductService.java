@@ -4,7 +4,9 @@ import com.store.pharmacy_service.inventory.domain.entities.Inventory;
 import com.store.pharmacy_service.inventory.domain.repositories.InventoryRepository;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
+import com.store.pharmacy_service.products.domain.DTOs.PriceTypesRequest;
 import com.store.pharmacy_service.products.domain.entities.Product;
+import com.store.pharmacy_service.products.domain.entities.PriceType;
 import com.store.pharmacy_service.products.domain.repositories.ProductRepository;
 import com.store.pharmacy_service.products.utils.mappers.MapCategory;
 import com.store.pharmacy_service.products.utils.mappers.MapLaboratory;
@@ -30,8 +32,11 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
-                .packageUnit(productRequest.getPackageUnit())
-                .salePrice(productRequest.getSalePrice()).build();
+                .blisterPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BLISTER).getPrice())
+                .packagePrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.PACKAGE).getPrice())
+                .unitPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.UNIT).getPrice())
+                .boxPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BOX).getPrice())
+                .build();
         Product result = productRepository.save(productToSave);
         if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
         return MapProduct.mapToProductResponse(result);
@@ -45,12 +50,14 @@ public class ProductService {
                 .sku(findProductToEdit.getSku())
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
-                .packageSalePrice(productRequest.getPackageSalePrice())
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
-                .packageUnit(productRequest.getPackageUnit())
-                .salePrice(productRequest.getSalePrice()).build();
+                .blisterPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BLISTER).getPrice())
+                .packagePrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.PACKAGE).getPrice())
+                .unitPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.UNIT).getPrice())
+                .boxPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BOX).getPrice())
+                .build();
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);
     }
@@ -76,5 +83,11 @@ public class ProductService {
         inventory.setQuantity(0L);
         inventory.setProduct(productSaved);
         this.inventoryRepository.save(inventory);
+    }
+
+    private PriceTypesRequest typePriceRequest(List<PriceTypesRequest> priceTypesRequests, PriceType priceType) {
+        return priceTypesRequests.stream().findFirst()
+                .filter(priceTypesRequest -> priceTypesRequest.getType().equalsIgnoreCase(priceType.name()))
+                .orElse(new PriceTypesRequest());
     }
 }
