@@ -29,11 +29,9 @@ public class UserService {
         return mapToUserResponse(userSaved);
     }
 
-    public UserResponse login(String userName, String password) throws UserNotFoundException {
+    public UserResponse getUserByName(String userName) throws UserNotFoundException {
         UserEntity getUserByUserName = this.userRepository.getUserByUserName(userName);
         if(Objects.isNull(getUserByUserName)) throw new UserNotFoundException("user no exists with this user name");
-        boolean passwordMatch = BCryptUserPassword.match(password, getUserByUserName.getPassword());
-        if (!passwordMatch) throw new UserNotFoundException("password incorrect");
         return mapToUserResponse(getUserByUserName);
     }
 
