@@ -3,6 +3,8 @@ package com.store.pharmacy_service.products.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "product")
 @Getter
@@ -32,17 +34,8 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "unit_price")
-    private Double unitPrice;
-
-    @Column(name = "package_price")
-    private Double packagePrice;
-
-    @Column(name = "box_price")
-    private Double boxPrice;
-
-    @Column(name = "blister_price")
-    private Double blisterPrice;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
+    private List<PriceType> priceTypes;
 
     @Override
     public String toString() {
@@ -54,6 +47,7 @@ public class Product {
                 ", presentation='" + presentation + '\'' +
                 ", laboratory=" + laboratory +
                 ", category=" + category +
+                ", priceTypes=" + priceTypes +
                 '}';
     }
 }

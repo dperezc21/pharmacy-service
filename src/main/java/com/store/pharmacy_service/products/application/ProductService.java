@@ -4,12 +4,12 @@ import com.store.pharmacy_service.inventory.domain.entities.Inventory;
 import com.store.pharmacy_service.inventory.domain.repositories.InventoryRepository;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
-import com.store.pharmacy_service.products.domain.DTOs.PriceTypesRequest;
-import com.store.pharmacy_service.products.domain.entities.Product;
 import com.store.pharmacy_service.products.domain.entities.PriceType;
+import com.store.pharmacy_service.products.domain.entities.Product;
 import com.store.pharmacy_service.products.domain.repositories.ProductRepository;
 import com.store.pharmacy_service.products.utils.mappers.MapCategory;
 import com.store.pharmacy_service.products.utils.mappers.MapLaboratory;
+import com.store.pharmacy_service.products.utils.mappers.MapPriceType;
 import com.store.pharmacy_service.products.utils.mappers.MapProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
@@ -25,6 +25,7 @@ public class ProductService {
     @Autowired private InventoryRepository inventoryRepository;
 
     public ProductResponse saveProduct(ProductRequest productRequest) {
+
         Product productToSave = Product.builder()
                 .sku(productRequest.getCode())
                 .name(productRequest.getName())
@@ -32,17 +33,21 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
-                .blisterPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BLISTER).getPrice())
-                .packagePrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.PACKAGE).getPrice())
-                .unitPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.UNIT).getPrice())
-                .boxPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BOX).getPrice())
                 .build();
+
+        List<PriceType> priceTypes = productRequest.getPriceTypes().stream()
+                .map(MapPriceType::mapToProductPriceType)
+                .peek(priceType -> priceType.setProduct(productToSave))
+                .parallel().toList();
+
+        productToSave.setPriceTypes(priceTypes);
         Product result = productRepository.save(productToSave);
         if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
         return MapProduct.mapToProductResponse(result);
     }
 
     public ProductResponse editProduct(Long productId, ProductRequest productRequest) {
+
         Product findProductToEdit = this.productRepository.findById(productId).orElse(null);
         if(findProductToEdit == null) return null;
         Product productToSave = Product.builder()
@@ -53,11 +58,14 @@ public class ProductService {
                 .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
                 .category(MapCategory.mapToCategory(productRequest.getCategory()))
                 .presentation(productRequest.getPresentation())
-                .blisterPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BLISTER).getPrice())
-                .packagePrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.PACKAGE).getPrice())
-                .unitPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.UNIT).getPrice())
-                .boxPrice(typePriceRequest(productRequest.getPriceTypes(), PriceType.BOX).getPrice())
                 .build();
+
+        List<PriceType> priceTypes = productRequest.getPriceTypes().stream()
+                .map(MapPriceType::mapToProductPriceType)
+                .peek(priceType -> priceType.setProduct(productToSave))
+                .parallel().toList();
+
+        productToSave.setPriceTypes(priceTypes);
         Product result = productRepository.save(productToSave);
         return MapProduct.mapToProductResponse(result);
     }
@@ -83,11 +91,5 @@ public class ProductService {
         inventory.setQuantity(0L);
         inventory.setProduct(productSaved);
         this.inventoryRepository.save(inventory);
-    }
-
-    private PriceTypesRequest typePriceRequest(List<PriceTypesRequest> priceTypesRequests, PriceType priceType) {
-        return priceTypesRequests.stream().findFirst()
-                .filter(priceTypesRequest -> priceTypesRequest.getType().equalsIgnoreCase(priceType.name()))
-                .orElse(new PriceTypesRequest());
     }
 }

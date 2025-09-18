@@ -9,8 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PriceTypeResponse {
+    private Long priceTypeId;
     private String type;
     private String label;
     private Boolean selected;
     private Double price;
+    private Integer quantity;
 }

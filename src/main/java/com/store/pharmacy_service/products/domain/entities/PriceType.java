@@ -1,18 +1,28 @@
 package com.store.pharmacy_service.products.domain.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
+@Entity
+@Table(name = "price_type")
 @Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public enum PriceType {
-    UNIT("Precio por unidad"),
-    PACKAGE("Precio por paquete"),
-    BOX("Precio por caja"),
-    BLISTER("Precio por blister");
+@Builder
+public class PriceType {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String type;
     private String label;
+    private Double price;
+    private Integer quantity;
 
-    PriceType(String label) {
-        this.label = label;
-    }
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
 }

@@ -9,7 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class PriceTypesRequest {
+    private Long priceTypeId;
     private String type;
     private String label;
     private Double price;
+    private Integer quantity;
 }
