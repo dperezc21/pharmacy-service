@@ -2,10 +2,12 @@ package com.store.pharmacy_service.products.application;
 
 import com.store.pharmacy_service.inventory.domain.entities.Inventory;
 import com.store.pharmacy_service.inventory.domain.repositories.InventoryRepository;
+import com.store.pharmacy_service.products.domain.DTOs.PriceTypesRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductRequest;
 import com.store.pharmacy_service.products.domain.DTOs.ProductResponse;
 import com.store.pharmacy_service.products.domain.entities.PriceType;
 import com.store.pharmacy_service.products.domain.entities.Product;
+import com.store.pharmacy_service.products.domain.repositories.PriceTypesRepository;
 import com.store.pharmacy_service.products.domain.repositories.ProductRepository;
 import com.store.pharmacy_service.products.utils.mappers.MapCategory;
 import com.store.pharmacy_service.products.utils.mappers.MapLaboratory;
@@ -14,6 +16,7 @@ import com.store.pharmacy_service.products.utils.mappers.MapProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +26,9 @@ public class ProductService {
 
     @Autowired private ProductRepository productRepository;
     @Autowired private InventoryRepository inventoryRepository;
+    @Autowired private PriceTypesRepository priceTypesRepository;
 
+    @Transactional
     public ProductResponse saveProduct(ProductRequest productRequest) {
 
         Product productToSave = Product.builder()
@@ -35,13 +40,7 @@ public class ProductService {
                 .presentation(productRequest.getPresentation())
                 .build();
 
-        List<PriceType> priceTypes = productRequest.getPriceTypes().stream()
-                .map(MapPriceType::mapToProductPriceType)
-                .peek(priceType -> priceType.setProduct(productToSave))
-                .parallel().toList();
-
-        productToSave.setPriceTypes(priceTypes);
-        Product result = productRepository.save(productToSave);
+        Product result = savePriceTypesListOfProduct(productRequest.getPriceTypes(), productToSave);
         if(Objects.nonNull(result.getId())) this.createInventoryOfProduct(result);
         return MapProduct.mapToProductResponse(result);
     }
@@ -50,24 +49,28 @@ public class ProductService {
 
         Product findProductToEdit = this.productRepository.findById(productId).orElse(null);
         if(findProductToEdit == null) return null;
-        Product productToSave = Product.builder()
-                .id(findProductToEdit.getId())
-                .sku(findProductToEdit.getSku())
-                .name(productRequest.getName())
-                .description(productRequest.getDescription())
-                .laboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()))
-                .category(MapCategory.mapToCategory(productRequest.getCategory()))
-                .presentation(productRequest.getPresentation())
-                .build();
 
-        List<PriceType> priceTypes = productRequest.getPriceTypes().stream()
+        findProductToEdit.setName(productRequest.getName());
+        findProductToEdit.setDescription(productRequest.getDescription());
+        findProductToEdit.setPresentation(productRequest.getPresentation());
+        findProductToEdit.setLaboratory(MapLaboratory.mapToLaboratory(productRequest.getLaboratory()));
+        findProductToEdit.setCategory(MapCategory.mapToCategory(productRequest.getCategory()));
+
+        Product result = savePriceTypesListOfProduct(productRequest.getPriceTypes(), findProductToEdit);
+        return MapProduct.mapToProductResponse(result);
+    }
+
+    public Product savePriceTypesListOfProduct(List<PriceTypesRequest> typesRequests, Product productToSave) {
+        Product result = productRepository.save(productToSave);
+
+        List<PriceType> priceTypes = typesRequests.stream()
                 .map(MapPriceType::mapToProductPriceType)
-                .peek(priceType -> priceType.setProduct(productToSave))
+                .peek(priceType -> priceType.setProduct(result))
                 .parallel().toList();
 
-        productToSave.setPriceTypes(priceTypes);
-        Product result = productRepository.save(productToSave);
-        return MapProduct.mapToProductResponse(result);
+        List<PriceType> priceTypeSaved = Streamable.of(this.priceTypesRepository.saveAll(priceTypes)).toList();
+        result.setPriceTypes(priceTypeSaved);
+        return result;
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -78,8 +81,13 @@ public class ProductService {
     public Boolean deleteProduct(Long productId) {
         Product productToDelete = this.productRepository.findById(productId).orElse(null);
         if(productToDelete == null) return false;
-        this.productRepository.delete(productToDelete);
-        return true;
+        try {
+            this.productRepository.delete(productToDelete);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Unexpected Error to delete product "+ e.getMessage());
+        }
+        return false;
     }
 
     public Product findProductById(Long productId) {

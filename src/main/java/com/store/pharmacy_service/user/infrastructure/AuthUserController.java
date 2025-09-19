@@ -6,6 +6,7 @@ import com.store.pharmacy_service.user.domain.exceptions.UserNotFoundException;
 import com.store.pharmacy_service.user.domain.models.UserRequest;
 import com.store.pharmacy_service.user.domain.models.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -79,5 +80,17 @@ public class AuthUserController {
             return ResponseEntity.internalServerError().body(false);
         }
         return ResponseEntity.status(200).body(true);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<Boolean> getData(@RequestHeader("Authorization") String authorizationHeader) {
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7); // Eliminar "Bearer "
+            boolean tokenIsNotValid = this.jwtUtil.tokenIsNotValid(token);
+            if(token.isEmpty() || tokenIsNotValid) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+            return ResponseEntity.status(200).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
     }
 }
