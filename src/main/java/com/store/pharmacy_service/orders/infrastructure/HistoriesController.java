@@ -1,7 +1,6 @@
 package com.store.pharmacy_service.orders.infrastructure;
 
 import com.store.pharmacy_service.orders.application.OrderHistoryService;
-import com.store.pharmacy_service.orders.domain.models.OrderHistoryResponse;
 import com.store.pharmacy_service.orders.domain.models.OrderItemHistoryResponse;
 import com.store.pharmacy_service.orders.domain.models.OrderType;
 import org.springframework.beans.factory.annotation.Autowired;

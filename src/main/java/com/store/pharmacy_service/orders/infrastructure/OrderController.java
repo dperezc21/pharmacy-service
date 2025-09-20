@@ -20,7 +20,6 @@ public class OrderController {
         try {
             this.orderService.placeOrder(orderRequest);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(false);
         }
         return  ResponseEntity.ok(true);

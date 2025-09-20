@@ -4,6 +4,8 @@ import com.store.pharmacy_service.products.domain.entities.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "order_item")
 @Getter
@@ -27,9 +29,12 @@ public class OrderItem {
     @Column(name = "sub_total")
     private Double subTotal;
 
-    @ManyToOne
+    private Date date;
+    /*@ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Order order;*/
+
+    private String orderType;
 
     @Override
     public String toString() {
@@ -39,7 +44,7 @@ public class OrderItem {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", subTotal=" + subTotal +
-                ", order=" + order +
+                /*", order=" + order +*/
                 '}';
     }
 }

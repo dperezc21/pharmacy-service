@@ -13,8 +13,6 @@ import java.util.List;
 @Builder
 public class OrderRequest {
 
-    private String observations;
     private Date date;
     private List<OrderItemRequest> orderItems;
-    private Double total;
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OrderItemRepository extends CrudRepository<OrderItem, Long> {
-    List<OrderItem> getOrderItemByOrderOrderType(String orderType);
+    List<OrderItem> getOrderItemByOrderType(String orderType);
 }
