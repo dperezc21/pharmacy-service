@@ -30,11 +30,10 @@ public class OrderItem {
     private Double subTotal;
 
     private Date date;
-    /*@ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;*/
 
     private String orderType;
+    private String priceTypeName;
+    private Long totalQuantity;
 
     @Override
     public String toString() {
@@ -44,7 +43,6 @@ public class OrderItem {
                 ", price=" + price +
                 ", quantity=" + quantity +
                 ", subTotal=" + subTotal +
-                /*", order=" + order +*/
                 '}';
     }
 }

@@ -19,4 +19,6 @@ public class OrderItemHistoryResponse {
     private Long quantity;
     private Double subTotal;
     private Date orderDate;
+    private String priceTypeName;
+    private Long totalQuantity;
 }

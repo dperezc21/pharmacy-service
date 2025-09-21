@@ -13,4 +13,6 @@ public class OrderItemRequest {
     private Double unitPrice;
     private Long quantity;
     private Double subTotal;
+    private String priceTypeName;
+    private Long totalQuantity;
 }

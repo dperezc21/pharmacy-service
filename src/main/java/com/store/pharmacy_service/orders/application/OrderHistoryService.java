@@ -27,6 +27,8 @@ public class OrderHistoryService {
                 .subTotal(orderItem.getSubTotal())
                 .unitPrice(orderItem.getPrice())
                 .orderDate(orderItem.getDate())
+                .priceTypeName(orderItem.getPriceTypeName())
+                .totalQuantity(orderItem.getTotalQuantity())
                 .build();
     }
 

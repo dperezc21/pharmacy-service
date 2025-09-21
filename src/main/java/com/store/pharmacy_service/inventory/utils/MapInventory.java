@@ -13,7 +13,7 @@ public class MapInventory {
         return orderItemList.stream().map(orderItem1 -> {
             InventoryRequest inventory = new InventoryRequest();
             inventory.setDate(orderItem1.getDate());
-            inventory.setQuantity(orderItem1.getQuantity());
+            inventory.setQuantity(orderItem1.getTotalQuantity());
             inventory.setProductId(orderItem1.getProduct().getId());
             return inventory;
         }).parallel().toList();
