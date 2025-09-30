@@ -45,8 +45,3 @@ This is a backend service built with **Spring Boot**, following the principles o
 - `PUT /products/{id}` — Update product
 - `DELETE /products/{id}` — Delete product
 - `GET /products/inventory` — Get products inventory to display stock
-
-## Project Structure
-
-This project uses **Hexagonal Architecture** (also known as Ports and Adapters), which separates the core business logic from external concerns (like database, web, or security). The core domain is isolated and easily testable.
-
